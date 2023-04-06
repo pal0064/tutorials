@@ -1,3 +1,4 @@
-# nlp_tutorials
+# NLP Tutorials
 
-Here's the nlp tutorial
+## Tutorials
+- Stanza
