@@ -4,8 +4,10 @@
 
 1. [Introduction](#Introduction)
 2. [Installation](#Installation)
-2. [Sentimental Analysis using Stanza](Stanza.md)
+3. [Features](#Features)
+4. [Sentimental Analysis using Stanza](Stanza.md)
 
+<a name="Introduction"></a>
 ## Introduction
 
 Stanza is a package similar to Nltk. It offers a suite of tools that can efficiently and accurately process natural language, from the raw text to advanced tasks like syntactic analysis and entity recognition. Stanza also brings the latest NLP models to multiple languages, making it a powerful tool for anyone who needs to work with multilingual text data.
@@ -15,7 +17,7 @@ Stanza is a Python natural language analysis package. It contains tools, which c
 Stanza is built with highly accurate neural network components that also enable efficient training and evaluation with your own annotated data. 
 In addition, Stanza includes a Python interface to the CoreNLP Java package and inherits additional functionality from there, such as constituency parsing, coreference resolution, and linguistic pattern matching.
 
-
+<a name="Features"></a>
 ## Features
 
 - Native Python implementation requiring minimal efforts to set up;
@@ -23,7 +25,7 @@ In addition, Stanza includes a Python interface to the CoreNLP Java package and 
 - Pretrained neural models supporting [70 (human) languages](https://stanfordnlp.github.io/stanza/models.html#human-languages-supported-by-stanza);
 A stable, officially maintained Python interface to CoreNLP.
 
-
+<a name="Installation"></a>
 ## Installation
 
 `
