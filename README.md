@@ -1,6 +1,6 @@
 # NLP Tutorials
 
-## Tutorials
-- Stanza
-    1. [Introduction](stanza/index.md)
-    2. [Hands-On](stanza/Stanza.ipynb)
+
+Tutorials on NLP tools and techniques
+
+Please refer to the [website](https://pal0064.github.io/nlp_tutorials)
