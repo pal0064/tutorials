@@ -3,8 +3,9 @@
 ## Table of Contents
 
 1. [Introduction](#Introduction)
-2. [Installation](#Installation)
-3. [Features](#Features)
+2. [Features](#Features)
+3. [Why do we need Stanza?](#WhyStanza) 
+3. [Installation](#Installation)
 4. [Stanza Basic Components](#Stanza_Basic_Components)
 5. [Sentimental Analysis using Stanza](Stanza.md)
 
@@ -26,8 +27,18 @@ In addition, Stanza includes a Python interface to the CoreNLP Java package and 
 - Pretrained neural models supporting [70 (human) languages](https://stanfordnlp.github.io/stanza/models.html#human-languages-supported-by-stanza);
 A stable, officially maintained Python interface to CoreNLP.
 
+
+<a name="WhyStanza"></a>
+## 3. Why do we need Stanza?
+
+Even though we already have many NLP packages like NLTK, Spacy etc. But Stanza have it's own advanteges.
+
+- Accuracy: Stanza uses state-of-the-art models trained on large datasets, which can lead to higher accuracy in many NLP tasks.
+- Multilingual support: Stanza provides pre-trained models for many languages, whereas NLTK has limited support for languages other than English.
+- Ease of use: Stanza provides a simple and consistent API for performing various NLP tasks.
+
 <a name="Installation"></a>
-## 3. Installation
+## 4. Installation
 
 ``` bash
 pip install stanza
@@ -55,14 +66,12 @@ for more installation instructions follow the [official link](https://stanfordnl
 
 <a name="Stanza_Basic_Components"></a>
 
-## 4. Stanza Basic Components
+## 5. Stanza Basic Components
 
 Please check the components [here](BasicComponents.md)
 
-## 5. Sentimental Analysis using Stanza
+## 6. Sentimental Analysis using Stanza
 
 We will use Stanza to do the sentimental analysis. 
-
-Sentiment analysis is the process of analyzing digital text to determine if the emotional tone of the message is positive, negative, or neutral. It’s often used by businesses to detect sentiment in social data, gauge brand reputation, and understand customers.
 
 Please check the analysis [here](Stanza.md)

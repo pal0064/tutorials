@@ -1,137 +1,71 @@
+# Sentimental Analysis
+
+Sentiment analysis is the process of analyzing digital text to determine if the emotional tone of the message is positive, negative, or neutral. It’s often used by businesses to detect sentiment in social data, gauge brand reputation, and understand customers.
+
+Sentiment analysis faces a major hurdle due to the complex nature of human language. Textual data frequently incorporates sarcasm, irony, and other types of figurative language that can be hard to decipher using conventional approach
+
+
+In this tutorial, we will try to learn how we can use Stanza and NLTK to do the sentimental Analysis
+
+## Installations
+
+
 ```python
 %%capture
-!pip install stanza
+!pip install stanza datasets
 ```
+
+## Setting Parameters
 
 
 ```python
-use_gpu = False
+use_gpu = True
 shrink_dataset = True
 ```
 
-
+## Imports
 
 
 ```python
 import stanza
-stanza.download('en') # download English model
-nlp = stanza.Pipeline('en', use_gpu=use_gpu) # initialize English neural pipeline
-
-```
-
-
-    Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.5.0.json:   0%|   …
-
-
-    2023-04-23 12:59:16 INFO: Downloading default packages for language: en (English) ...
-    2023-04-23 12:59:18 INFO: File exists: /Users/pal/stanza_resources/en/default.zip
-    2023-04-23 12:59:21 INFO: Finished downloading models and saved to /Users/pal/stanza_resources.
-    2023-04-23 12:59:21 INFO: Checking for updates to resources.json in case models have been updated.  Note: this behavior can be turned off with download_method=None or download_method=DownloadMethod.REUSE_RESOURCES
-
-
-
-    Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.5.0.json:   0%|   …
-
-
-    2023-04-23 12:59:22 INFO: Loading these models for language: en (English):
-    ============================
-    | Processor    | Package   |
-    ----------------------------
-    | tokenize     | combined  |
-    | pos          | combined  |
-    | lemma        | combined  |
-    | constituency | wsj       |
-    | depparse     | combined  |
-    | sentiment    | sstplus   |
-    | ner          | ontonotes |
-    ============================
-    
-    2023-04-23 12:59:22 INFO: Using device: cpu
-    2023-04-23 12:59:22 INFO: Loading: tokenize
-    2023-04-23 12:59:22 INFO: Loading: pos
-    2023-04-23 12:59:22 INFO: Loading: lemma
-    2023-04-23 12:59:22 INFO: Loading: constituency
-    2023-04-23 12:59:23 INFO: Loading: depparse
-    2023-04-23 12:59:23 INFO: Loading: sentiment
-    2023-04-23 12:59:23 INFO: Loading: ner
-    2023-04-23 12:59:23 INFO: Done loading processors!
-
-
-
-```python
-doc = nlp("University Of Arizona is a great place to learn natural language processing") # run annotation over a sentence
-print(doc.entities)
-```
-
-    [{
-      "text": "University Of Arizona",
-      "type": "ORG",
-      "start_char": 0,
-      "end_char": 21
-    }]
-
-
-
-```python
-!pip install datasets
-```
-
-    Requirement already satisfied: datasets in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (2.11.0)
-    Requirement already satisfied: responses<0.19 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (0.18.0)
-    Requirement already satisfied: pandas in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (1.3.5)
-    Requirement already satisfied: huggingface-hub<1.0.0,>=0.11.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (0.13.4)
-    Requirement already satisfied: numpy>=1.17 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (1.23.4)
-    Requirement already satisfied: pyarrow>=8.0.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (10.0.1)
-    Requirement already satisfied: aiohttp in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (3.8.1)
-    Requirement already satisfied: packaging in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (23.0)
-    Requirement already satisfied: requests>=2.19.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (2.28.2)
-    Requirement already satisfied: xxhash in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (3.2.0)
-    Requirement already satisfied: fsspec[http]>=2021.11.1 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (2023.3.0)
-    Requirement already satisfied: pyyaml>=5.1 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (5.4.1)
-    Requirement already satisfied: tqdm>=4.62.1 in /Users/pal/Library/Python/3.10/lib/python/site-packages (from datasets) (4.64.1)
-    Requirement already satisfied: multiprocess in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (0.70.14)
-    Requirement already satisfied: dill<0.3.7,>=0.3.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from datasets) (0.3.6)
-    Requirement already satisfied: charset-normalizer<3.0,>=2.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (2.1.1)
-    Requirement already satisfied: yarl<2.0,>=1.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (1.8.2)
-    Requirement already satisfied: attrs>=17.3.0 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (22.2.0)
-    Requirement already satisfied: frozenlist>=1.1.1 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.3)
-    Requirement already satisfied: async-timeout<5.0,>=4.0.0a3 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (4.0.2)
-    Requirement already satisfied: multidict<7.0,>=4.5 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (6.0.4)
-    Requirement already satisfied: aiosignal>=1.1.2 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from aiohttp->datasets) (1.3.1)
-    Requirement already satisfied: typing-extensions>=3.7.4.3 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from huggingface-hub<1.0.0,>=0.11.0->datasets) (4.5.0)
-    Requirement already satisfied: filelock in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from huggingface-hub<1.0.0,>=0.11.0->datasets) (3.12.0)
-    Requirement already satisfied: certifi>=2017.4.17 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from requests>=2.19.0->datasets) (2022.12.7)
-    Requirement already satisfied: urllib3<1.27,>=1.21.1 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from requests>=2.19.0->datasets) (1.26.15)
-    Requirement already satisfied: idna<4,>=2.5 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from requests>=2.19.0->datasets) (3.4)
-    Requirement already satisfied: python-dateutil>=2.7.3 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from pandas->datasets) (2.8.2)
-    Requirement already satisfied: pytz>=2017.3 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from pandas->datasets) (2022.7.1)
-    Requirement already satisfied: six>=1.5 in /Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages (from python-dateutil>=2.7.3->pandas->datasets) (1.16.0)
-    
-    [1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m A new release of pip is available: [0m[31;49m23.0.1[0m[39;49m -> [0m[32;49m23.1[0m
-    [1m[[0m[34;49mnotice[0m[1;39;49m][0m[39;49m To update, run: [0m[32;49mpip install --upgrade pip[0m
-
-
-
-```python
+import nltk
+import seaborn as sns
+import matplotlib.pyplot as plt
 from datasets import load_dataset
+from nltk.corpus import stopwords
+from collections import Counter
+from tqdm.auto import tqdm
+from collections import defaultdict
+from sklearn.metrics import classification_report
+from wordcloud import WordCloud
+
 ```
+
+## Downloads
 
 
 ```python
-
+%%capture
+stanza.download('en',logging_level='WARN') # download English model
+nltk.download('stopwords',quiet=True)
 ```
+
+## Dataset
+We will use [Amazon US review dataset](https://huggingface.co/datasets/amazon_us_reviews) of 
+hugging face.
+
+As this dataset is huge, we will be using data of a subcategory i.e. Personal_Care_Appliances_v1_00
+
+It has about 85981 reviews. 
+
 
 
 ```python
+%%capture
 dataset = load_dataset('amazon_us_reviews','Personal_Care_Appliances_v1_00') 
 ```
 
-    Found cached dataset amazon_us_reviews (/Users/pal/.cache/huggingface/datasets/amazon_us_reviews/Personal_Care_Appliances_v1_00/0.1.0/17b2481be59723469538adeb8fd0a68b0ba363bbbdd71090e72c325ee6c7e563)
-
-
-
-      0%|          | 0/1 [00:00<?, ?it/s]
-
+Let's take a look at one sample record 
 
 
 ```python
@@ -171,76 +105,7 @@ dataset['train'].shape
 
 
 
-
-```python
-dataset['train'][0]
-```
-
-
-
-
-    {'marketplace': 'US',
-     'customer_id': '32114233',
-     'review_id': 'R1QX6706ZWJ1P5',
-     'product_id': 'B00OYRW4UE',
-     'product_parent': '223980852',
-     'product_title': 'Elite Sportz Exercise Sliders are Double Sided and Work Smoothly on Any Surface. Wide Variety of Low Impact Exercise’s You Can Do. Full Body Workout, Compact for Travel or Home Ab Workout',
-     'product_category': 'Personal_Care_Appliances',
-     'star_rating': 5,
-     'helpful_votes': 0,
-     'total_votes': 0,
-     'vine': 0,
-     'verified_purchase': 1,
-     'review_headline': 'Good quality. Shipped',
-     'review_body': 'Exactly as described. Good quality. Shipped fast',
-     'review_date': '2015-08-31'}
-
-
-
-
-```python
-import nltk
-from nltk.corpus import stopwords
-nltk.download('stopwords')
-```
-
-    [nltk_data] Error loading stopwords: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-
-
-
-
-
-    False
-
-
-
-
-```python
-nlp = stanza.Pipeline(lang='en', processors='tokenize,lemma',use_gpu=use_gpu)
-```
-
-    2023-04-23 12:59:29 INFO: Checking for updates to resources.json in case models have been updated.  Note: this behavior can be turned off with download_method=None or download_method=DownloadMethod.REUSE_RESOURCES
-
-
-
-    Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.5.0.json:   0%|   …
-
-
-    2023-04-23 12:59:29 INFO: Loading these models for language: en (English):
-    ========================
-    | Processor | Package  |
-    ------------------------
-    | tokenize  | combined |
-    | lemma     | combined |
-    ========================
-    
-    2023-04-23 12:59:29 INFO: Using device: cpu
-    2023-04-23 12:59:29 INFO: Loading: tokenize
-    2023-04-23 12:59:29 INFO: Loading: lemma
-    2023-04-23 12:59:29 INFO: Done loading processors!
-
+Shrink dataset if set for faster execution
 
 
 ```python
@@ -249,32 +114,48 @@ if shrink_dataset:
   size  = 100
 ```
 
+let's get the required data and label. We will use the review_body and star_rating to classify the sentiment.
+
+
+## Data Analysis
+
 
 ```python
-from tqdm.auto import tqdm
+def plot_pie(ratings,name):
+  plt.pie(ratings.values(), labels=ratings.keys(), autopct='%1.1f%%')
+  plt.title(f"Distribution of Star Ratings - {name}")
+  plt.show()
 ```
 
 
 ```python
-def pre_process_review_texts(texts):
-  processed_texts = []
-  for text in tqdm(texts):
-    doc = nlp(text.lower())
-    lemmatized_tokens= []
-    for sentence in doc.sentences:
-        for word in sentence.words:
-          if word.lemma and word.lemma not in stopwords.words('english'):
-            lemmatized_tokens.append(word.lemma)
-    processed_text = ' '.join(lemmatized_tokens)
-    processed_texts.append(processed_text)
-  return processed_texts
-
-processed_texts = pre_process_review_texts(dataset['train']['review_body'][0:size])
+ratings = Counter(dataset['train']['star_rating'])
+plot_pie(ratings, 'Complete Dataset')
 ```
 
 
-      0%|          | 0/100 [00:00<?, ?it/s]
+    
+![png](Stanza_files/Stanza_20_0.png)
+    
 
+
+
+```python
+ratings = Counter(dataset['train']['star_rating'][0:size])
+plot_pie(ratings, 'Shrinked Dataset')
+```
+
+
+    
+![png](Stanza_files/Stanza_21_0.png)
+    
+
+
+Most of the ratings are 5, so we can expect more positive sentiments.
+
+## Common Preprocessing
+
+ `pre_process_ratings` function takes a list of ratings as input and map each rating to a sentiment value of 0, 1, or 2, representing negative, neutral, and positive sentiment, respectively. The output is a list of pre-processed sentiment values that can be used for further analysis or modeling.
 
 
 ```python
@@ -288,42 +169,94 @@ def pre_process_ratings(ratings):
     else:
       sentiments.append(1)
   return sentiments
+```
+
+
+```python
 true_labels = pre_process_ratings(dataset['train']['star_rating'][0:size])
 ```
 
+## Preprocessing Using Stanza
+
+ `pre_process_review_texts` function takes a list of texts as input and applies pre-processing steps such as lowercasing, tokenization, lemmatization, and stop word(from nltk corpus) removal using the Stanza library. The output is a list of pre-processed text data that can be used for further analysis or modeling.
+
 
 ```python
-from collections import defaultdict
-nlp_sentiment = stanza.Pipeline(lang='en', processors='tokenize,sentiment',use_gpu=use_gpu)
+def pre_process_review_texts(nlp,texts):
+  processed_texts = []
+  for text in tqdm(texts):
+    doc = nlp(text.lower())
+    lemmatized_tokens= []
+    for sentence in doc.sentences:
+        for word in sentence.words:
+          if word.lemma and word.lemma not in stopwords.words('english'):
+            lemmatized_tokens.append(word.lemma)
+    processed_text = ' '.join(lemmatized_tokens)
+    processed_texts.append(processed_text)
+  return processed_texts
+```
+
+Below code sets up a Stanza pipeline.
+Here's what each of the parameters used in the Pipeline constructor means:
+
+- lang='en': specifies that the language of the text data to be processed is English.
+- processors='tokenize,lemma': specifies that two processing steps should be applied to the text data: tokenization (i.e., splitting the text into individual words or tokens) and lemmatization (i.e., reducing each word to its base form or lemma).
+- logging_level='WARN': sets the logging level to "warning", which means that only warnings and errors will be logged during processing. This can be helpful for reducing the amount of output generated during processing.
+- use_gpu: specifies whether to use the GPU (graphics processing unit) for processing
+
+
+
+```python
+%%capture
+nlp = stanza.Pipeline(lang='en', processors='tokenize,lemma',logging_level='WARN',use_gpu=use_gpu)
+```
+
+
+
+
+```python
+processed_texts = pre_process_review_texts(nlp,dataset['train']['review_body'][0:size])
+```
+
+
+      0%|          | 0/100 [00:00<?, ?it/s]
+
+
+Let's take a quick look at the word cloud of our processed text
+
+
+```python
+def show_word_cloud(processed_texts, custom_stop_words= ['br']):
+  word_cloud_stop_words = set(stopwords.words('english'))
+  word_cloud_stop_words.update(custom_stop_words) 
+  all_reviews = " ".join(review for review in processed_texts)
+  wordcloud = WordCloud(stopwords=word_cloud_stop_words).generate(all_reviews)
+  plt.imshow(wordcloud, interpolation='bilinear')
+  plt.axis("off")
+  plt.show()
 
 ```
 
-    2023-04-23 12:59:31 INFO: Checking for updates to resources.json in case models have been updated.  Note: this behavior can be turned off with download_method=None or download_method=DownloadMethod.REUSE_RESOURCES
+
+```python
+show_word_cloud(processed_texts)
+```
 
 
-
-    Downloading https://raw.githubusercontent.com/stanfordnlp/stanza-resources/main/resources_1.5.0.json:   0%|   …
-
-
-    2023-04-23 12:59:31 INFO: Loading these models for language: en (English):
-    ========================
-    | Processor | Package  |
-    ------------------------
-    | tokenize  | combined |
-    | sentiment | sstplus  |
-    ========================
     
-    2023-04-23 12:59:31 INFO: Using device: cpu
-    2023-04-23 12:59:31 INFO: Loading: tokenize
-    2023-04-23 12:59:31 INFO: Loading: sentiment
-    2023-04-23 12:59:32 INFO: Done loading processors!
+![png](Stanza_files/Stanza_36_0.png)
+    
 
+
+## Sentimental Analysis Using Stanza
+
+`get_sentiment` function performs sentiment analysis on a given review (multiple sentences) using a Stanza pipeline object, and returns the sentiment with the highest frequency in the review. For e.g. if in a review, more sentences belong to the 0 class (Negative Sentiment) then we will consider that a negative  review
 
 
 ```python
-def get_sentiment(text):
+def get_sentiment(stanza_sentiment_analyzer,text):
   sentiments = defaultdict(int)
-  doc = nlp_sentiment(text)
+  doc = stanza_sentiment_analyzer(text)
   total =0
   for sentence in doc.sentences:
     sentiments[sentence.sentiment]+=1
@@ -333,29 +266,42 @@ def get_sentiment(text):
   return sorted_values[0][0]
 ```
 
+`get_sentiments_using_stanza` function applies sentiment analysis using a Stanza pipeline object to a list of reviews and generates predicted labels.It also collects the true labels for these reviews. The output is a tuple containing two lists: predicted_sentiments and true_sentiments, which can be used for evaluating the performance of the sentiment analysis model.
+
 
 ```python
-def get_sentiment_using_stanza(texts,labels):
+def get_sentiments_using_stanza(stanza_sentiment_analyzer,texts,labels):
   predicted_sentiments =[]
   true_sentiments = []
   for idx,text in tqdm(enumerate(texts),total=len(texts)):
     try:
-      sentiment = get_sentiment(text)
+      sentiment = get_sentiment(stanza_sentiment_analyzer,text)
       predicted_sentiments.append(sentiment)
       true_sentiments.append(labels[idx])
     except IndexError:
        pass
   return predicted_sentiments,true_sentiments
-predicted_sentiments_stanza,true_sentiments = get_sentiment_using_stanza(processed_texts,true_labels)
+```
+
+
+```python
+%%capture
+stanza_sentiment_analyzer = stanza.Pipeline(lang='en', processors='tokenize,sentiment',logging_level='WARN',use_gpu=use_gpu)
+```
+
+
+```python
+predicted_sentiments_stanza,true_sentiments = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts,true_labels)
 ```
 
 
       0%|          | 0/100 [00:00<?, ?it/s]
 
 
+## Results Of Stanza Sentimental Analysis
+
 
 ```python
-from sklearn.metrics import classification_report
 print(classification_report(true_sentiments, predicted_sentiments_stanza))
 ```
 
@@ -371,6 +317,10 @@ print(classification_report(true_sentiments, predicted_sentiments_stanza))
     
 
 
+## NLTK provides a sentimental analyzer too, let's try that one as well
+
+## Imports
+
 
 ```python
 import nltk
@@ -379,26 +329,19 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 ```
 
+## Downloads
+
 
 ```python
-nltk.download('punkt')
-nltk.download('wordnet')
+%%capture
+nltk.download('punkt',quiet=True)
+nltk.download('wordnet',quiet=True)
+nltk.download('vader_lexicon',quiet=True)
 ```
 
-    [nltk_data] Error loading punkt: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-    [nltk_data] Error loading wordnet: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+## Preprocessing Using NLTK
 
-
-
-
-
-    False
-
-
+ `pre_process_review_texts` function takes a list of texts as input and applies pre-processing steps such as lowercasing, tokenization, lemmatization, and stop word(from nltk corpus) removal using the **NLTK** library. The output is a list of pre-processed text data that can be used for further analysis or modeling.
 
 
 ```python
@@ -412,35 +355,38 @@ def preprocess_review_texts_using_nltk(texts):
       processed_text = ' '.join(lemmatized_tokens)
       processed_texts.append(processed_text)
   return processed_texts
-processed_texts = preprocess_review_texts_using_nltk(dataset['train']['review_body'][0:size])
+
+```
+
+
+```python
+processed_texts_nltk = preprocess_review_texts_using_nltk(dataset['train']['review_body'][0:size])
 ```
 
 
       0%|          | 0/100 [00:00<?, ?it/s]
 
 
+Let's take a quick look at the word cloud of our processed text
+
 
 ```python
-nltk.download('vader_lexicon')
+show_word_cloud(processed_texts_nltk)
 ```
 
-    [nltk_data] Error loading vader_lexicon: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+
+    
+![png](Stanza_files/Stanza_56_0.png)
+    
 
 
+## Sentimental Analysis Using NLTK
 
-
-
-    False
-
-
+`get_sentiment_using_nltk` function applies sentiment analysis using a SentimentIntensityAnalyzer to a list of reviews and generates predicted labels.It also collects the true labels for these reviews. The output is a tuple containing two lists: predicted_sentiments and true_sentiments, which can be used for evaluating the performance of the sentiment analysis model.`
 
 
 ```python
-analyzer = SentimentIntensityAnalyzer()
-
-def get_sentiment_using_nltk(texts,labels):
+def get_sentiment_using_nltk(analyzer,texts,labels):
   predicted_sentiments =[]
   true_sentiments = []
   for idx,text in tqdm(enumerate(texts),total=len(texts)):
@@ -452,12 +398,20 @@ def get_sentiment_using_nltk(texts,labels):
     except IndexError:
        pass
   return predicted_sentiments,true_sentiments
-predicted_sentiments_nltk,true_sentiments = get_sentiment_using_nltk(processed_texts,true_labels)
+
+```
+
+
+```python
+analyzer = SentimentIntensityAnalyzer()
+predicted_sentiments_nltk,true_sentiments = get_sentiment_using_nltk(analyzer, processed_texts_nltk,true_labels)
 ```
 
 
       0%|          | 0/100 [00:00<?, ?it/s]
 
+
+## Results Of NLTK Sentimental Analysis
 
 
 ```python
@@ -475,3 +429,6 @@ print(classification_report(true_sentiments, predicted_sentiments_nltk))
     weighted avg       0.88      0.59      0.69       100
     
 
+
+## Conclusion
+Both of the Sentimental analyzers did not give great performance for our usecase. May be we can improve preprocessing to achieve a better performance. Though they are great for quick sentimental analysis. Training your own model can achieve better performance, but it's a time consuming process.
