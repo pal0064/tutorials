@@ -12,7 +12,7 @@ In this tutorial, we will try to learn how we can use Stanza and NLTK to do the 
 
 ```python
 %%capture
-!pip install stanza datasets
+!pip install stanza datasets nltk matplotlib tqdm wordcloud scikit-learn 
 ```
 
 ## Setting Parameters
@@ -29,7 +29,6 @@ shrink_dataset = True
 ```python
 import stanza
 import nltk
-import seaborn as sns
 import matplotlib.pyplot as plt
 from datasets import load_dataset
 from nltk.corpus import stopwords
@@ -49,6 +48,11 @@ from wordcloud import WordCloud
 stanza.download('en',logging_level='WARN') # download English model
 nltk.download('stopwords',quiet=True)
 ```
+
+    [nltk_data] Error loading stopwords: <urlopen error [SSL:
+    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+
 
 ## Dataset
 We will use [Amazon US review dataset](https://huggingface.co/datasets/amazon_us_reviews) of 
@@ -211,6 +215,9 @@ Here's what each of the parameters used in the Pipeline constructor means:
 nlp = stanza.Pipeline(lang='en', processors='tokenize,lemma',logging_level='WARN',use_gpu=use_gpu)
 ```
 
+    2023-04-23 20:40:06 WARNING: GPU requested, but is not available!
+
+
 
 
 
@@ -289,6 +296,9 @@ def get_sentiments_using_stanza(stanza_sentiment_analyzer,texts,labels):
 stanza_sentiment_analyzer = stanza.Pipeline(lang='en', processors='tokenize,sentiment',logging_level='WARN',use_gpu=use_gpu)
 ```
 
+    2023-04-23 20:40:09 WARNING: GPU requested, but is not available!
+
+
 
 ```python
 predicted_sentiments_stanza,true_sentiments = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts,true_labels)
@@ -338,6 +348,17 @@ nltk.download('punkt',quiet=True)
 nltk.download('wordnet',quiet=True)
 nltk.download('vader_lexicon',quiet=True)
 ```
+
+    [nltk_data] Error loading punkt: <urlopen error [SSL:
+    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+    [nltk_data] Error loading wordnet: <urlopen error [SSL:
+    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+    [nltk_data] Error loading vader_lexicon: <urlopen error [SSL:
+    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
+
 
 ## Preprocessing Using NLTK
 
@@ -432,3 +453,5 @@ print(classification_report(true_sentiments, predicted_sentiments_nltk))
 
 ## Conclusion
 Both of the Sentimental analyzers did not give great performance for our usecase. May be we can improve preprocessing to achieve a better performance. Though they are great for quick sentimental analysis. Training your own model can achieve better performance, but it's a time consuming process.
+
+Stanza tutorial finished. Let's go back to main [page](../index.md)

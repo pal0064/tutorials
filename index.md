@@ -14,8 +14,6 @@ Natural language processing (NLP) is a machine learning technology that gives co
 
 ## List of Tutorials
 
+Start here 
+
 - [Stanza](stanza/index.md)
-
-
-## Reference:
-- https://aws.amazon.com/what-is/nlp/

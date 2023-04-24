@@ -5,9 +5,9 @@
 1. [Introduction](#Introduction)
 2. [Features](#Features)
 3. [Why do we need Stanza?](#WhyStanza) 
-3. [Installation](#Installation)
-4. [Stanza Basic Components](#Stanza_Basic_Components)
-5. [Sentimental Analysis using Stanza](Stanza.md)
+4. [Installation](#Installation)
+5. [Stanza Basic Components](#Stanza_Basic_Components)
+6. [Sentimental Analysis using Stanza](#SentimentalAnalysis)
 
 <a name="Introduction"></a>
 ## 1. Introduction
@@ -69,6 +69,8 @@ for more installation instructions follow the [official link](https://stanfordnl
 ## 5. Stanza Basic Components
 
 Please check the components [here](BasicComponents.md)
+
+<a name="SentimentalAnalysis"></a>
 
 ## 6. Sentimental Analysis using Stanza
 
