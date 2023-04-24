@@ -20,7 +20,7 @@ In this tutorial, we will try to learn how we can use Stanza and NLTK to do the 
 
 ```python
 use_gpu = True
-shrink_dataset = True
+shrink_dataset = False
 ```
 
 ## Imports
@@ -49,11 +49,6 @@ stanza.download('en',logging_level='WARN') # download English model
 nltk.download('stopwords',quiet=True)
 ```
 
-    [nltk_data] Error loading stopwords: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-
-
 ## Dataset
 We will use [Amazon US review dataset](https://huggingface.co/datasets/amazon_us_reviews) of 
 hugging face.
@@ -68,6 +63,9 @@ It has about 85981 reviews.
 %%capture
 dataset = load_dataset('amazon_us_reviews','Personal_Care_Appliances_v1_00') 
 ```
+
+    WARNING:datasets.builder:Found cached dataset amazon_us_reviews (/root/.cache/huggingface/datasets/amazon_us_reviews/Personal_Care_Appliances_v1_00/0.1.0/17b2481be59723469538adeb8fd0a68b0ba363bbbdd71090e72c325ee6c7e563)
+
 
 Let's take a look at one sample record 
 
@@ -215,9 +213,6 @@ Here's what each of the parameters used in the Pipeline constructor means:
 nlp = stanza.Pipeline(lang='en', processors='tokenize,lemma',logging_level='WARN',use_gpu=use_gpu)
 ```
 
-    2023-04-23 20:40:06 WARNING: GPU requested, but is not available!
-
-
 
 
 
@@ -226,7 +221,7 @@ processed_texts = pre_process_review_texts(nlp,dataset['train']['review_body'][0
 ```
 
 
-      0%|          | 0/100 [00:00<?, ?it/s]
+      0%|          | 0/85981 [00:00<?, ?it/s]
 
 
 Let's take a quick look at the word cloud of our processed text
@@ -296,16 +291,13 @@ def get_sentiments_using_stanza(stanza_sentiment_analyzer,texts,labels):
 stanza_sentiment_analyzer = stanza.Pipeline(lang='en', processors='tokenize,sentiment',logging_level='WARN',use_gpu=use_gpu)
 ```
 
-    2023-04-23 20:40:09 WARNING: GPU requested, but is not available!
-
-
 
 ```python
 predicted_sentiments_stanza,true_sentiments = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts,true_labels)
 ```
 
 
-      0%|          | 0/100 [00:00<?, ?it/s]
+      0%|          | 0/85981 [00:00<?, ?it/s]
 
 
 ## Results Of Stanza Sentimental Analysis
@@ -317,13 +309,13 @@ print(classification_report(true_sentiments, predicted_sentiments_stanza))
 
                   precision    recall  f1-score   support
     
-               0       0.60      0.55      0.57        11
-               1       0.08      0.75      0.15         4
-               2       0.96      0.60      0.74        85
+               0       0.42      0.39      0.41     16376
+               1       0.10      0.56      0.17      7047
+               2       0.91      0.46      0.61     62551
     
-        accuracy                           0.60       100
-       macro avg       0.55      0.63      0.49       100
-    weighted avg       0.89      0.60      0.70       100
+        accuracy                           0.46     85974
+       macro avg       0.48      0.47      0.40     85974
+    weighted avg       0.75      0.46      0.54     85974
     
 
 
@@ -348,17 +340,6 @@ nltk.download('punkt',quiet=True)
 nltk.download('wordnet',quiet=True)
 nltk.download('vader_lexicon',quiet=True)
 ```
-
-    [nltk_data] Error loading punkt: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-    [nltk_data] Error loading wordnet: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-    [nltk_data] Error loading vader_lexicon: <urlopen error [SSL:
-    [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-    [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
-
 
 ## Preprocessing Using NLTK
 
@@ -385,7 +366,7 @@ processed_texts_nltk = preprocess_review_texts_using_nltk(dataset['train']['revi
 ```
 
 
-      0%|          | 0/100 [00:00<?, ?it/s]
+      0%|          | 0/85981 [00:00<?, ?it/s]
 
 
 Let's take a quick look at the word cloud of our processed text
@@ -429,7 +410,7 @@ predicted_sentiments_nltk,true_sentiments = get_sentiment_using_nltk(analyzer, p
 ```
 
 
-      0%|          | 0/100 [00:00<?, ?it/s]
+      0%|          | 0/85981 [00:00<?, ?it/s]
 
 
 ## Results Of NLTK Sentimental Analysis
@@ -441,17 +422,15 @@ print(classification_report(true_sentiments, predicted_sentiments_nltk))
 
                   precision    recall  f1-score   support
     
-               0       0.50      0.18      0.27        11
-               1       0.05      0.50      0.09         4
-               2       0.96      0.65      0.77        85
+               0       0.58      0.19      0.29     16377
+               1       0.12      0.43      0.18      7050
+               2       0.84      0.74      0.79     62554
     
-        accuracy                           0.59       100
-       macro avg       0.51      0.44      0.38       100
-    weighted avg       0.88      0.59      0.69       100
+        accuracy                           0.61     85981
+       macro avg       0.51      0.45      0.42     85981
+    weighted avg       0.73      0.61      0.64     85981
     
 
 
 ## Conclusion
 Both of the Sentimental analyzers did not give great performance for our usecase. May be we can improve preprocessing to achieve a better performance. Though they are great for quick sentimental analysis. Training your own model can achieve better performance, but it's a time consuming process.
-
-Stanza tutorial finished. Let's go back to main [page](../index.md)

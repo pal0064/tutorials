@@ -77,3 +77,5 @@ Please check the components [here](BasicComponents.md)
 We will use Stanza to do the sentimental analysis. 
 
 Please check the analysis [here](Stanza.md)
+
+Here's the colab [link](https://colab.research.google.com/drive/1J4AgPCGiKrsbd0FXkINUm42e5Rel24Jh?usp=sharing) as well
