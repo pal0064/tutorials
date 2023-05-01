@@ -1,11 +1,11 @@
-# Sentimental Analysis
+# Sentiment Analysis
 
 Sentiment analysis is the process of analyzing digital text to determine if the emotional tone of the message is positive, negative, or neutral. It’s often used by businesses to detect sentiment in social data, gauge brand reputation, and understand customers.
 
-Sentiment analysis faces a major hurdle due to the complex nature of human language. Textual data frequently incorporates sarcasm, irony, and other types of figurative language that can be hard to decipher using conventional approach
+Sentiment analysis faces a major hurdle due to the complex nature of human language. Textual data frequently incorporate sarcasm, irony, and other types of figurative language that can be hard to decipher using a conventional approach
 
 
-In this tutorial, we will try to learn how we can use Stanza and NLTK to do the sentimental Analysis
+In this tutorial, we will try to learn how we can use Stanza and NLTK to do the Sentiment Analysis
 
 ## Installations
 
@@ -133,6 +133,7 @@ def plot_pie(ratings,name):
 ```python
 ratings = Counter(dataset['train']['star_rating'])
 plot_pie(ratings, 'Complete Dataset')
+ratings
 ```
 
 
@@ -142,9 +143,17 @@ plot_pie(ratings, 'Complete Dataset')
 
 
 
+
+
+    Counter({5: 48897, 2: 5341, 4: 13657, 1: 11036, 3: 7050})
+
+
+
+
 ```python
 ratings = Counter(dataset['train']['star_rating'][0:size])
 plot_pie(ratings, 'Shrinked Dataset')
+ratings
 ```
 
 
@@ -153,29 +162,46 @@ plot_pie(ratings, 'Shrinked Dataset')
     
 
 
+
+
+
+    Counter({5: 48897, 2: 5341, 4: 13657, 1: 11036, 3: 7050})
+
+
+
 Most of the ratings are 5, so we can expect more positive sentiments.
 
 ## Common Preprocessing
 
- `pre_process_ratings` function takes a list of ratings as input and map each rating to a sentiment value of 0, 1, or 2, representing negative, neutral, and positive sentiment, respectively. The output is a list of pre-processed sentiment values that can be used for further analysis or modeling.
+ `map_dataset` function takes the dataset and maps each rating to a sentiment value of 0, 1, or 2, representing negative, neutral, and positive sentiment, respectively. By default all the ratings are included, but we can include specific ratings as well by using `raings_included` parameter. The output is a list of pre-processed sentiment values and corresponding review bodies that can be used for further analysis or modeling.
 
 
 ```python
-def pre_process_ratings(ratings):
+def map_dataset(dataset_df, raings_included={1,2,3,4,5}):
   sentiments  = []
-  for rating in ratings:
-    if rating <=2:
-      sentiments.append(0)
-    elif rating >=4:
-      sentiments.append(2)
-    else:
-      sentiments.append(1)
-  return sentiments
+  review_texts = []
+  for index, row in dataset_df.iterrows():
+    rating = row['star_rating']
+    sentiment = None
+    if rating in raings_included:
+      if rating <=2:
+        sentiment = 0
+      elif rating >=4:
+        sentiment = 2
+      else:
+        sentiment = 1
+      sentiments.append(sentiment)
+      review_texts.append(row['review_body'])
+  return sentiments, review_texts
 ```
 
+Let's get all the labels and review texts. We will create **two types of datasets**, one with all the ratings (1,2,3,4,5) i.e. `true_labels_all` and `review_texts_all` and another with just star ratings of 1 (lowest) and 5(highest) i.e. `true_labels_filtered` and `review_texts_filtered`. We can think of 1-star ratings as gold-label examples of negative sentiment, and 5-star ratings as gold-label examples of positive sentiment. Better performance is expected from the filtered dataset.
+
 
 ```python
-true_labels = pre_process_ratings(dataset['train']['star_rating'][0:size])
+df = dataset['train'].to_pandas().iloc[:size]
+true_labels_all,review_texts_all = map_dataset(df)
+true_labels_filtered, review_texts_filtered = map_dataset(df,{1,5})
 ```
 
 ## Preprocessing Using Stanza
@@ -198,7 +224,7 @@ def pre_process_review_texts(nlp,texts):
   return processed_texts
 ```
 
-Below code sets up a Stanza pipeline.
+The below code sets up a Stanza pipeline.
 Here's what each of the parameters used in the Pipeline constructor means:
 
 - lang='en': specifies that the language of the text data to be processed is English.
@@ -213,18 +239,27 @@ Here's what each of the parameters used in the Pipeline constructor means:
 nlp = stanza.Pipeline(lang='en', processors='tokenize,lemma',logging_level='WARN',use_gpu=use_gpu)
 ```
 
-
+**Preprocessed texts for both types of datasets**
 
 
 ```python
-processed_texts = pre_process_review_texts(nlp,dataset['train']['review_body'][0:size])
+processed_texts_all = pre_process_review_texts(nlp,review_texts_all)
 ```
 
 
       0%|          | 0/85981 [00:00<?, ?it/s]
 
 
-Let's take a quick look at the word cloud of our processed text
+
+```python
+processed_texts_filtered = pre_process_review_texts(nlp,review_texts_filtered)
+```
+
+
+      0%|          | 0/59933 [00:00<?, ?it/s]
+
+
+Let's take a quick look at the word cloud of our processed texts of the complete dataset (Star ratings - 1 to 5)
 
 
 ```python
@@ -241,16 +276,29 @@ def show_word_cloud(processed_texts, custom_stop_words= ['br']):
 
 
 ```python
-show_word_cloud(processed_texts)
+show_word_cloud(processed_texts_all)
 ```
 
 
     
-![png](Stanza_files/Stanza_36_0.png)
+![png](Stanza_files/Stanza_38_0.png)
     
 
 
-## Sentimental Analysis Using Stanza
+Now, let's take a quick look at the word cloud of our processed texts of the filtered dataset (Star ratings - 1 and 5 only)
+
+
+```python
+show_word_cloud(processed_texts_filtered)
+```
+
+
+    
+![png](Stanza_files/Stanza_40_0.png)
+    
+
+
+## Sentiment Analysis Using Stanza
 
 `get_sentiment` function performs sentiment analysis on a given review (multiple sentences) using a Stanza pipeline object, and returns the sentiment with the highest frequency in the review. For e.g. if in a review, more sentences belong to the 0 class (Negative Sentiment) then we will consider that a negative  review
 
@@ -293,18 +341,29 @@ stanza_sentiment_analyzer = stanza.Pipeline(lang='en', processors='tokenize,sent
 
 
 ```python
-predicted_sentiments_stanza,true_sentiments = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts,true_labels)
+predicted_sentiments_all_stanza,true_sentiments_all = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts_all,true_labels_all)
 ```
 
 
       0%|          | 0/85981 [00:00<?, ?it/s]
 
 
-## Results Of Stanza Sentimental Analysis
+
+```python
+predicted_sentiments_filtered_stanza,true_sentiments_filtered = get_sentiments_using_stanza(stanza_sentiment_analyzer, processed_texts_filtered,true_labels_filtered)
+```
+
+
+      0%|          | 0/59933 [00:00<?, ?it/s]
+
+
+## Results Of Stanza Sentiment Analysis
+
+**Result of the complete dataset analysis**
 
 
 ```python
-print(classification_report(true_sentiments, predicted_sentiments_stanza))
+print(classification_report(true_sentiments_all, predicted_sentiments_all_stanza,zero_division=0))
 ```
 
                   precision    recall  f1-score   support
@@ -319,7 +378,26 @@ print(classification_report(true_sentiments, predicted_sentiments_stanza))
     
 
 
-## NLTK provides a sentimental analyzer too, let's try that one as well
+**Result of the filtered dataset analysis**
+
+
+```python
+print(classification_report(true_sentiments_filtered, predicted_sentiments_filtered_stanza,zero_division=0))
+```
+
+                  precision    recall  f1-score   support
+    
+               0       0.47      0.42      0.45     11036
+               1       0.00      0.00      0.00         0
+               2       0.97      0.49      0.65     48896
+    
+        accuracy                           0.48     59932
+       macro avg       0.48      0.30      0.37     59932
+    weighted avg       0.87      0.48      0.61     59932
+    
+
+
+## NLTK provides a sentiment analyzer too, let's try that one as well
 
 ## Imports
 
@@ -360,29 +438,53 @@ def preprocess_review_texts_using_nltk(texts):
 
 ```
 
+**Preprocessed texts for both types of datasets**
+
 
 ```python
-processed_texts_nltk = preprocess_review_texts_using_nltk(dataset['train']['review_body'][0:size])
+processed_texts_all_nltk = preprocess_review_texts_using_nltk(review_texts_all)
 ```
 
 
       0%|          | 0/85981 [00:00<?, ?it/s]
 
 
-Let's take a quick look at the word cloud of our processed text
+
+```python
+processed_texts_filtered_nltk = preprocess_review_texts_using_nltk(review_texts_filtered)
+```
+
+
+      0%|          | 0/59933 [00:00<?, ?it/s]
+
+
+Let's take a quick look at the word cloud of our processed texts of the complete dataset (Star ratings - 1 to 5)
 
 
 ```python
-show_word_cloud(processed_texts_nltk)
+show_word_cloud(processed_texts_all_nltk)
 ```
 
 
     
-![png](Stanza_files/Stanza_56_0.png)
+![png](Stanza_files/Stanza_66_0.png)
     
 
 
-## Sentimental Analysis Using NLTK
+Now, let's take a quick look at the word cloud of our processed texts of the filtered dataset (Star ratings - 1 and 5 only)
+
+
+```python
+show_word_cloud(processed_texts_filtered_nltk)
+```
+
+
+    
+![png](Stanza_files/Stanza_68_0.png)
+    
+
+
+## Sentiment Analysis Using NLTK
 
 `get_sentiment_using_nltk` function applies sentiment analysis using a SentimentIntensityAnalyzer to a list of reviews and generates predicted labels.It also collects the true labels for these reviews. The output is a tuple containing two lists: predicted_sentiments and true_sentiments, which can be used for evaluating the performance of the sentiment analysis model.`
 
@@ -406,18 +508,34 @@ def get_sentiment_using_nltk(analyzer,texts,labels):
 
 ```python
 analyzer = SentimentIntensityAnalyzer()
-predicted_sentiments_nltk,true_sentiments = get_sentiment_using_nltk(analyzer, processed_texts_nltk,true_labels)
+
+```
+
+
+```python
+predicted_sentiments_all_nltk,true_sentiments_all = get_sentiment_using_nltk(analyzer, processed_texts_all_nltk,true_labels_all)
 ```
 
 
       0%|          | 0/85981 [00:00<?, ?it/s]
 
 
-## Results Of NLTK Sentimental Analysis
+
+```python
+predicted_sentiments_filtered_nltk,true_sentiments_filtered = get_sentiment_using_nltk(analyzer, processed_texts_filtered_nltk,true_labels_filtered)
+```
+
+
+      0%|          | 0/59933 [00:00<?, ?it/s]
+
+
+## Results Of NLTK Sentiment Analysis
+
+**Result of the complete dataset analysis**
 
 
 ```python
-print(classification_report(true_sentiments, predicted_sentiments_nltk))
+print(classification_report(true_sentiments_all, predicted_sentiments_all_nltk,zero_division=0))
 ```
 
                   precision    recall  f1-score   support
@@ -432,5 +550,30 @@ print(classification_report(true_sentiments, predicted_sentiments_nltk))
     
 
 
+**Result of the filtered dataset analysis**
+
+
+```python
+print(classification_report(true_sentiments_filtered, predicted_sentiments_filtered_nltk,zero_division=0))
+```
+
+                  precision    recall  f1-score   support
+    
+               0       0.65      0.22      0.33     11036
+               1       0.00      0.00      0.00         0
+               2       0.93      0.76      0.83     48897
+    
+        accuracy                           0.66     59933
+       macro avg       0.53      0.33      0.39     59933
+    weighted avg       0.88      0.66      0.74     59933
+    
+
+
 ## Conclusion
-Both of the Sentimental analyzers did not give great performance for our usecase. May be we can improve preprocessing to achieve a better performance. Though they are great for quick sentimental analysis. Training your own model can achieve better performance, but it's a time consuming process.
+Both of the sentiment analyzers did not give great performance for our use case. Reasons could be the complexity and ambiguity of natural language or due to the inexact mapping of star ratings and sentiment. Sentiment analysis could be affected by several factors such as sarcasm, irony, and cultural nuances that are difficult to detect using automated tools. As a result, it is challenging to achieve high accuracy in sentiment analysis. Maybe we can improve preprocessing to achieve better performance. Filtered datasets that had extreme positive(Star - 5) and extreme negative (Star -1) performed little than the complete dataset. 
+Different libraries may have different strengths and weaknesses, and it is important to choose the most appropriate tool based on the specific requirements and constraints of the project. In summary, while both NLTK and Stanza can be useful tools for quick sentiment analysis, the complexity, and ambiguity of natural language, as well as limited preprocessing of text data, can pose significant challenges, resulting in relatively low scores.
+
+
+```python
+
+```
