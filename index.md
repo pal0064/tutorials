@@ -2,7 +2,7 @@
 
 ## What is NLP?
 
-Natural language processing (NLP) is a machine learning technology that gives computers the ability to interpret, manipulate, and comprehend human language. Natural language processing (NLP) combines computational linguistics, machine learning, and deep learning models to process human language.
+Natural language processing (NLP) is a machine-learning technology that gives computers the ability to interpret, manipulate, and comprehend human language. Natural language processing (NLP) combines computational linguistics, machine learning, and deep learning models to process human language.
 
 ## Applications of NLP
 
