@@ -17,3 +17,6 @@ Natural language processing (NLP) is a machine-learning technology that gives co
 Start here 
 
 - [Stanza](stanza/index.md)
+
+## Local Development Guide
+[Guide](local_development.md)

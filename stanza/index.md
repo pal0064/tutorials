@@ -8,6 +8,7 @@
 4. [Installation](#Installation)
 5. [Stanza Basic Components](#Stanza_Basic_Components)
 6. [Sentiment Analysis using Stanza](#SentimentAnalysis)
+7. [Local Development Guide](#LocalDevelopmentGuide)
 
 <a name="Introduction"></a>
 ## 1. Introduction
@@ -77,3 +78,7 @@ We will use Stanza to do the Sentiment analysis.
 Please check the analysis [here](Stanza.md)
 
 Here's the colab [link](https://colab.research.google.com/drive/1SVBPyfczj_KtpsbAJmHcJX4ulcMrk4O3?usp=sharing) as well
+
+<a name="LocalDevelopmentGuide"></a>
+## 7. Local Development Guide
+[Guide](../local_development.md)
