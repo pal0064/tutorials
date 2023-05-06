@@ -15,6 +15,9 @@ In this tutorial, we will try to learn how we can use Stanza and NLTK to do the 
 !pip install stanza datasets nltk matplotlib tqdm wordcloud scikit-learn 
 ```
 
+At the time of development, Stanza's version is 1.5.0 and Nltk's version is 3.8.1
+
+
 ## Setting Parameters
 
 
@@ -138,7 +141,7 @@ ratings
 
 
     
-![png](Stanza_files/Stanza_20_0.png)
+![png](Stanza_files/Stanza_21_0.png)
     
 
 
@@ -158,7 +161,7 @@ ratings
 
 
     
-![png](Stanza_files/Stanza_21_0.png)
+![png](Stanza_files/Stanza_22_0.png)
     
 
 
@@ -281,7 +284,7 @@ show_word_cloud(processed_texts_all)
 
 
     
-![png](Stanza_files/Stanza_38_0.png)
+![png](Stanza_files/Stanza_39_0.png)
     
 
 
@@ -294,7 +297,7 @@ show_word_cloud(processed_texts_filtered)
 
 
     
-![png](Stanza_files/Stanza_40_0.png)
+![png](Stanza_files/Stanza_41_0.png)
     
 
 
@@ -467,7 +470,7 @@ show_word_cloud(processed_texts_all_nltk)
 
 
     
-![png](Stanza_files/Stanza_66_0.png)
+![png](Stanza_files/Stanza_67_0.png)
     
 
 
@@ -480,7 +483,7 @@ show_word_cloud(processed_texts_filtered_nltk)
 
 
     
-![png](Stanza_files/Stanza_68_0.png)
+![png](Stanza_files/Stanza_69_0.png)
     
 
 
@@ -573,4 +576,6 @@ print(classification_report(true_sentiments_filtered, predicted_sentiments_filte
 Both of the sentiment analyzers did not give great performance for our use case. Reasons could be the complexity and ambiguity of natural language or due to the inexact mapping of star ratings and sentiment. Sentiment analysis could be affected by several factors such as sarcasm, irony, and cultural nuances that are difficult to detect using automated tools. As a result, it is challenging to achieve high accuracy in sentiment analysis. Maybe we can improve preprocessing to achieve better performance. Filtered datasets that had extreme positive(Star - 5) and extreme negative (Star -1) performed little than the complete dataset. 
 Different libraries may have different strengths and weaknesses, and it is important to choose the most appropriate tool based on the specific requirements and constraints of the project. In summary, while both NLTK and Stanza can be useful tools for quick sentiment analysis, the complexity, and ambiguity of natural language, as well as limited preprocessing of text data, can pose significant challenges, resulting in relatively low scores.
 
-### Finally, let's check the [local development guide](https://pal0064.github.io/nlp_tutorials/local_development.html)
+Finally, let's move to the next page(https://pal0064.github.io/nlp_tutorials/stanza/index.html#LearnMore)
+
+

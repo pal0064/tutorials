@@ -86,6 +86,5 @@ nlp = stanza.Pipeline('en', processors='tokenize,pos', use_gpu=True)
 ```
 
 
-Let's move to [next step](Stanza.md) i.e. Sentiment Analysis using Stanza
-
+Let's check some interesting things about Stanza [here](interesting_stanza.md)
 
