@@ -19,19 +19,19 @@
 IMAGE_NAME=palankit0064/nlp-tutorials
 docker run -it -p 7777:8888 ${IMAGE_NAME}:latest
 ```
-Open http://localhost:7777 on your browser
+Open http://localhost:7777/notebooks/stanza/Stanza.ipynb on your browser
 
 ###  For running without any local changes
 ``` bash 
 make run
 ``` 
-Open http://localhost:7777 on your browser. Port can be changed in Makefile if required.
+Open http://localhost:7777/notebooks/stanza/Stanza.ipynb on your browser. Port can be changed in Makefile if required.
 
 ###  For running with the local changes
 ``` bash 
 make run-local-dir
 ``` 
-Open http://localhost:7777 on your browser. Port can be changed in Makefile if required.
+Open http://localhost:7777/notebooks/stanza/Stanza.ipynb on your browser. Port can be changed in Makefile if required.
 
 ###  For building
 Change IMAGE_NAME in Makefile
