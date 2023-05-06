@@ -176,7 +176,7 @@ Most of the ratings are 5, so we can expect more positive sentiments.
 
 ## Common Preprocessing
 
- `map_dataset` function takes the dataset and maps each rating to a sentiment value of 0, 1, or 2, representing negative, neutral, and positive sentiment, respectively. By default all the ratings are included, but we can include specific ratings as well by using `raings_included` parameter. The output is a list of pre-processed sentiment values and corresponding review bodies that can be used for further analysis or modeling.
+ `map_dataset` function takes the dataset and maps each rating to a sentiment value of 0, 1, or 2, representing negative, neutral, and positive sentiment, respectively. By default, all the ratings are included, but we can include specific ratings as well by using `raings_included` parameter. The output is a list of pre-processed sentiment values and corresponding review bodies that can be used for further analysis or modeling.
 
 
 ```python
@@ -573,9 +573,9 @@ print(classification_report(true_sentiments_filtered, predicted_sentiments_filte
 
 
 ## Conclusion
-Both of the sentiment analyzers did not give great performance for our use case. Reasons could be the complexity and ambiguity of natural language or due to the inexact mapping of star ratings and sentiment. Sentiment analysis could be affected by several factors such as sarcasm, irony, and cultural nuances that are difficult to detect using automated tools. As a result, it is challenging to achieve high accuracy in sentiment analysis. Maybe we can improve preprocessing to achieve better performance. Filtered datasets that had extreme positive(Star - 5) and extreme negative (Star -1) performed little than the complete dataset. 
-Different libraries may have different strengths and weaknesses, and it is important to choose the most appropriate tool based on the specific requirements and constraints of the project. In summary, while both NLTK and Stanza can be useful tools for quick sentiment analysis, the complexity, and ambiguity of natural language, as well as limited preprocessing of text data, can pose significant challenges, resulting in relatively low scores.
+Both of the sentiment analyzers did not give great performance for our use case. Reasons could be the complexity and ambiguity of natural language or due to the inexact mapping of star ratings and sentiment. Sentiment analysis could be affected by several factors such as sarcasm, irony, and cultural nuances that are difficult to detect using automated tools. As a result, it is challenging to achieve high accuracy in sentiment analysis. Maybe we can improve preprocessing to achieve better performance. Filtered datasets that had extreme positive(Star - 5) and extreme negative (Star -1) performed little better than the complete dataset. 
+Different libraries may have different strengths and weaknesses, and it is important to choose the most appropriate tool based on the specific requirements and constraints of the project. In summary, while both NLTK and Stanza can be useful tools for quick sentiment analysis, the complexity, and ambiguity of natural language, as well as limited preprocessing of text data, can pose significant challenges, resulting in relatively low performance.
 
-Finally, let's move to the next page(https://pal0064.github.io/nlp_tutorials/stanza/index.html#LearnMore)
+Finally, let's move to the next [page](https://pal0064.github.io/nlp_tutorials/stanza/index.html#LearnMore)
 
 
