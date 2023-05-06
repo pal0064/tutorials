@@ -8,7 +8,7 @@
 4. [Stanza Basic Components](#Stanza_Basic_Components)
 5. [Interesting Stanza Things](#interesting_stanza_things)
 6. [Sentiment Analysis using Stanza](#SentimentAnalysis)
-7. [Learn more about Stanza here](#LearnMore)
+7. [Learn more about Stanza](#LearnMore)
 8. [Local Development Guide](#LocalDevelopmentGuide)
 
 <a name="Introduction"></a>
@@ -72,11 +72,9 @@ Please check the analysis [here](Stanza.md)
 Here's the colab [link](https://colab.research.google.com/drive/1SVBPyfczj_KtpsbAJmHcJX4ulcMrk4O3?usp=sharing) as well
 
 <a name="LearnMore"></a>
-### 7. Learn more about Stanza here from other existing tutorials:
-- https://stanfordnlp.github.io/stanza/tutorials.html
-- https://colab.research.google.com/github/stanfordnlp/stanza/blob/master/demo/Stanza_Beginners_Guide.ipynb
-- https://analyticsindiamag.com/how-to-use-stanza-by-stanford-nlp-group-with-python-code/
-- https://pemagrg.medium.com/nlp-using-stanza-3775c7e00f2a
+### 7. Learn more about Stanza from other existing tutorials:
+- [Stanza Tutorials](https://stanfordnlp.github.io/stanza/tutorials.html)
+- [How To Use Stanza](https://analyticsindiamag.com/how-to-use-stanza-by-stanford-nlp-group-with-python-code/)
 
 To understand the process of modifying this tutorial using Docker, refer to the below local development guide:
 
