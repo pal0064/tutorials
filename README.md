@@ -1,4 +1,4 @@
-# NLP Tutorials
+# DS/ML/DL Tutorials
 
 
 Tutorials on NLP tools and techniques
