@@ -32,7 +32,7 @@ def load_data():
 
 df = load_data()
 
-@st.cache_data(persist=True)
+# @st.cache_data(persist=True)
 def load_model():
     md = joblib.load('streamlit_tutorial/prediction_model_tuned.joblib')
     return md
