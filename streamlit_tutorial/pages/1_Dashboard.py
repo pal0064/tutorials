@@ -85,3 +85,12 @@ st.map(filtered_data[['latitude', 'longitude']])
 # Display filtered data
 st.subheader('Filtered Data')
 st.write(filtered_data)
+
+import sys
+st.write(sys.version_info[:])
+from pip._internal.operations import freeze
+
+x = freeze.freeze()
+for dependency in x:
+   st.write(dependency)
+
