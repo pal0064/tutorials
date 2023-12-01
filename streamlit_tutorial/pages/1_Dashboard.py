@@ -85,17 +85,3 @@ st.map(filtered_data[['latitude', 'longitude']])
 # Display filtered data
 st.subheader('Filtered Data')
 st.write(filtered_data)
-
-
-
-
-# price
-# property_type
-# today's date and time 
-# county
-
-
-# zip 
-# primary_city 
-# predict today's price then show which city or zip where you should buy
-# 
