@@ -6,7 +6,7 @@ import plotly.express as px
 
 st.set_page_config(
     page_title="Arizona Housing Price Analysis",
-    page_icon="✅",
+    page_icon=":house_buildings:",
     layout="wide",
 )
 
@@ -86,3 +86,16 @@ st.map(filtered_data[['latitude', 'longitude']])
 st.subheader('Filtered Data')
 st.write(filtered_data)
 
+
+
+
+# price
+# property_type
+# today's date and time 
+# county
+
+
+# zip 
+# primary_city 
+# predict today's price then show which city or zip where you should buy
+# 
